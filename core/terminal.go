@@ -19,9 +19,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/kgretzky/evilginx2/database"
-	"github.com/kgretzky/evilginx2/log"
-	"github.com/kgretzky/evilginx2/parser"
+	"github.com/baddbass/evilginx2/database"
+	"github.com/baddbass/evilginx2/log"
+	"github.com/baddbass/evilginx2/parser"
 
 	"github.com/chzyer/readline"
 	"github.com/fatih/color"
